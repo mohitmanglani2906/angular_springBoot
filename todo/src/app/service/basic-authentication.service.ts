@@ -13,37 +13,44 @@ export class BasicAuthenticationService {
 
   constructor(private http: HttpClient) { }
 
-  // authenticate(username,password){
-  //   if(username === 'Mohit' && password === 'dummy')
-  //   {
-  //       sessionStorage.setItem('authenticaterUser', username)
-  //       return true;
-  //   }
-  //     return false;  
-  // }
+  executeJWTAuthenticationService(username,password) {
 
-  executeAuthenticationService(username,password) {
-
-    console.log("___ In basic Auth ___")
-
-    let basicAuthHeadersString = 'Basic ' + window.btoa(username +':'+ password);
-
-    let headers = new HttpHeaders({
-      Authorization: basicAuthHeadersString
-    })
-
-    return this.http.get<AuthenticationBean>(
-      `${API_URL}/basicauth`,
-       {headers}). pipe(
+    return this.http.post<any>(
+      `${API_URL}/authenticate`,
+       {
+        username,
+        password 
+       }). pipe(
          map(
            data => {
-            sessionStorage.setItem(AUTHENTICATED_USER, username)
-            sessionStorage.setItem(TOKEN, basicAuthHeadersString)            
+            sessionStorage.setItem(AUTHENTICATED_USER, username);
+            sessionStorage.setItem(TOKEN, `Bearer ${data.token}`);           
             return data;
            }
          )
        );
   }
+
+  // executeAuthenticationService(username,password) {
+
+  //   let basicAuthHeadersString = 'Basic ' + window.btoa(username +':'+ password);
+
+  //   let headers = new HttpHeaders({
+  //     Authorization: basicAuthHeadersString
+  //   })
+
+  //   return this.http.get<AuthenticationBean>(
+  //     `${API_URL}/basicauth`,
+  //      {headers}). pipe(
+  //        map(
+  //          data => {
+  //           sessionStorage.setItem(AUTHENTICATED_USER, username)
+  //           sessionStorage.setItem(TOKEN, basicAuthHeadersString)            
+  //           return data;
+  //          }
+  //        )
+  //      );
+  // }
 
   getAuthenticatedToken(){
     if(this.getAuthenticatedUser())

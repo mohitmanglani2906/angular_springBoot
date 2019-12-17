@@ -34,7 +34,7 @@ export class TodoComponent implements OnInit {
 
   saveTodo() {
     console.log('Todo _____ ' + this.todo)
-    if(this.id === -1){
+    if(this.id == -1){
       this.todoService.createTodo('Mohit',this.todo).subscribe(
         data => {
           console.log(data)

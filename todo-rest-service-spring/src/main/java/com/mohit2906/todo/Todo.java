@@ -1,16 +1,17 @@
 package com.mohit2906.todo;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+@Entity
 public class Todo {
 
-	private long id;
+	@Id
+	@GeneratedValue 
+	private Long id;
+	
 	private String username;
 	private String description;
 	
@@ -20,13 +21,11 @@ public class Todo {
 	
 	private boolean isDone;
 	
-
-
 	protected Todo() {
 		super();
 	}
 
-	public Todo(long id, String username, String description, Timestamp timeStamp, boolean isDone) {
+	public Todo(Long id, String username, String description, Timestamp timeStamp, boolean isDone) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -35,11 +34,11 @@ public class Todo {
 		this.isDone = isDone;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

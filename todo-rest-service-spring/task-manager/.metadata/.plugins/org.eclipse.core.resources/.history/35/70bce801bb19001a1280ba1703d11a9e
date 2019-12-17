@@ -1,0 +1,16 @@
+package com.mohit2906.todo;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+public class TodoResource {
+	
+	private TodoHardcodedService todoHardCodedService;
+	
+	public List<Todo> getAllTodos(String username){
+			todoHardCodedService.findAll();
+	}
+}

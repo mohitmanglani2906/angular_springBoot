@@ -1,0 +1,14 @@
+package com.mohit2906.todo;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+public class TodoResource {
+	
+	public List<Todo> getAllTodos(String username){
+		
+	}
+}

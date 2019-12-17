@@ -35,23 +35,35 @@ export class LoginComponent implements OnInit {
     else {
       this.invalidLogin = true
     }
-
   }
 
-  handleBasicAuthLogin() {
-    //if(this.username === 'in28Minutes' && this.password === 'dummy'){
-    this.basicAuthenticationService.executeAuthenticationService(this.username, this.password)
+  handleJWTAuthLogin() {
+    this.basicAuthenticationService.executeJWTAuthenticationService(this.username, this.password)
       .subscribe(
         data => {
-          console.log("__ In Login Component ___")
           this.router.navigate(['welcome', this.username])
           this.invalidLogin = false
         },
         error => {
-          // console.log(error)
+          console.log(error)
           this.invalidLogin = true
         })
   }
+
+  // handleBasicAuthLogin() {
+  //   //if(this.username === 'in28Minutes' && this.password === 'dummy'){
+  //   this.basicAuthenticationService.executeAuthenticationService(this.username, this.password)
+  //     .subscribe(
+  //       data => {
+  //         // console.log("__ In Login Component ___")
+  //         this.router.navigate(['welcome', this.username])
+  //         this.invalidLogin = false
+  //       },
+  //       error => {
+  //         // console.log(error)
+  //         this.invalidLogin = true
+  //       })
+  //     }
 }
 
 
