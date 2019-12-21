@@ -72,7 +72,10 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
             .authorizeRequests()
             .antMatchers("${jwt.get.token.uri}").permitAll().
+            antMatchers("/db/users").permitAll().
+            antMatchers("/mail/send").permitAll().
             anyRequest().authenticated().and()
+            
             .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests();

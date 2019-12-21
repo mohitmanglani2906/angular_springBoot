@@ -30,3 +30,6 @@ build/
 ### VS Code ###
 .vscode/
 /.metadata/
+
+### API KEYS ###
+src/main/java/com/mohit2906/utils/Constants.java
