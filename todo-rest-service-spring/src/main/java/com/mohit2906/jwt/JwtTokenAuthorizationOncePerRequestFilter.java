@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.mohit2906.model.JwtUserDetailsService;
+
 import io.jsonwebtoken.ExpiredJwtException;
 
 @Component
@@ -26,20 +28,25 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+//    @Autowired
+//    private UserDetailsService jwtInMemoryUserDetailsService;
+    
     @Autowired
-    private UserDetailsService jwtInMemoryUserDetailsService;
+    private JwtUserDetailsService userDetailsService;
     
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     
     @Value("${jwt.http.request.header}")
     private String tokenHeader;
-
+    
+    //eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbjI4bWludXRlcyIsImV4cCI6MTU3NzE1NjkwOCwiaWF0IjoxNTc2NTUyMTA4fQ.xF2guD5TFmS8PV-4g5jcyHIE3JIp3KjDadane7H4kTbH7zxHwGxB7rCh9sPxa4dnE-ojFG3CoL1VvlBFsTxpHw
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         logger.info("Authentication Request For '{}'", request.getRequestURL());
 
-        final String requestTokenHeader = request.getHeader(this.tokenHeader);
+        final String requestTokenHeader = request.getHeader("Authorization");
         
         logger.info("___ Request Token Header  ____ ", requestTokenHeader);
 
@@ -49,8 +56,10 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                
             } catch (IllegalArgumentException e) {
                 logger.error("JWT_TOKEN_UNABLE_TO_GET_USERNAME", e);
+                
             } catch (ExpiredJwtException e) {
                 logger.warn("JWT_TOKEN_EXPIRED", e);
             }
@@ -59,9 +68,10 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
         }
 
         logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
+        
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.jwtInMemoryUserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

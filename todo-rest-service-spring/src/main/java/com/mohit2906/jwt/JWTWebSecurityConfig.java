@@ -28,8 +28,11 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtUnAuthorizedResponseAuthenticationEntryPoint jwtUnAuthorizedResponseAuthenticationEntryPoint;
 
+//    @Autowired
+//    private UserDetailsService jwtInMemoryUserDetailsService;
+    
     @Autowired
-    private UserDetailsService jwtInMemoryUserDetailsService;
+    private UserDetailsService jwtuserDetailsService;
 
     @Autowired
     private JwtTokenAuthorizationOncePerRequestFilter jwtAuthenticationTokenFilter;
@@ -40,7 +43,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .userDetailsService(jwtInMemoryUserDetailsService)
+            .userDetailsService(jwtuserDetailsService)
             .passwordEncoder(passwordEncoderBean());
     }
 
@@ -74,6 +77,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("${jwt.get.token.uri}").permitAll().
             antMatchers("/db/users").permitAll().
             antMatchers("/mail/send").permitAll().
+            //antMatchers("/db/users/all/*").permitAll().
             anyRequest().authenticated().and()
             
             .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()

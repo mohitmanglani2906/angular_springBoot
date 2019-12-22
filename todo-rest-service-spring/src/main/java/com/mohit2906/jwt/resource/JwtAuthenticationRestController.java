@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mohit2906.jwt.JwtTokenUtil;
-import com.mohit2906.jwt.JwtUserDetails;
+//import com.mohit2906.jwt.JwtUserDetails;
+import com.mohit2906.model.JwtUserDetailsService;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
@@ -41,19 +42,23 @@ public class JwtAuthenticationRestController {
   @Autowired	
   private JwtTokenUtil jwtTokenUtil;
 
+//  @Autowired
+//  private UserDetailsService jwtInMemoryUserDetailsService;
+//  
   @Autowired
-  private UserDetailsService jwtInMemoryUserDetailsService;
-
+  private JwtUserDetailsService userDetails;
+  
   @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
   public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
       throws AuthenticationException {
-
+	  
+	 
+	System.out.println("____ UserName and Password ____ " + 
+    		authenticationRequest.getUsername() + " " + authenticationRequest.getPassword());
+	
     authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
     
-    logger.info("____ UserName and Password ____ " + 
-    		authenticationRequest.getUsername() + " " + authenticationRequest.getPassword());
-    
-    final UserDetails userDetails = jwtInMemoryUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+    final UserDetails userDetails = this.userDetails.loadUserByUsername(authenticationRequest.getUsername());
     
     logger.info("___ User Details ___", userDetails);
     
@@ -69,7 +74,7 @@ public class JwtAuthenticationRestController {
     String authToken = request.getHeader(tokenHeader);
     final String token = authToken.substring(7);
     String username = jwtTokenUtil.getUsernameFromToken(token);
-    JwtUserDetails user = (JwtUserDetails) jwtInMemoryUserDetailsService.loadUserByUsername(username);
+//    JwtUserDetails user = (JwtUserDetails) this.userDetails.loadUserByUsername(username);
 
     if (jwtTokenUtil.canTokenBeRefreshed(token)) {
       String refreshedToken = jwtTokenUtil.refreshToken(token);
@@ -85,16 +90,28 @@ public class JwtAuthenticationRestController {
   }
 
   private void authenticate(String username, String password) {
-    Objects.requireNonNull(username);
-    Objects.requireNonNull(password);
+//    Objects.requireNonNull(username);
+//    Objects.requireNonNull(password);
+//    
+    System.out.println("___ In authenticate function ____ " );
 
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+      
+      System.out.println("___ In authenticate function ____ " );
+      
     } catch (DisabledException e) {
+    	
+      System.out.printf("USER_DISABLED", e.getMessage());	
       throw new AuthenticationException("USER_DISABLED", e);
+      
     } catch (BadCredentialsException e) {
+      System.out.printf("INVALID_CREDENTIALS", e.getMessage());	
       throw new AuthenticationException("INVALID_CREDENTIALS", e);
     }
+//    catch(Exception e) {
+//    	System.out.println(e.getMessage() + " Exception ");
+//    }
   }
 }
 

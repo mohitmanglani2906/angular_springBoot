@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class UserProfile 
 {	
 	@Id
@@ -20,11 +20,13 @@ public class UserProfile
 	
 	private String name;
 	
+	@Column(name="username")
+	private String username;
+	
 	@Column(name = "email")
 	private String email;
 	
 	private String password;
-	
 	
 	private Integer age;
 	
@@ -34,17 +36,21 @@ public class UserProfile
 		super();
 	}
 
-	public UserProfile(Long id, String name, String email, String password, Integer age, Timestamp dateOfBirth) {
+	public UserProfile(Long id, String name, String username, String email, String password, Integer age,
+			Timestamp dateOfBirth) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.age = age;
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -92,13 +98,22 @@ public class UserProfile
 	public void setDateOfBirth(Timestamp dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	@Override
 	public String toString() {
-		return "UserProfile [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", age="
-				+ age + ", dateOfBirth=" + dateOfBirth + "]";
+		return "UserProfile [id=" + id + ", name=" + name + ", username=" + username + ", email=" + email
+				+ ", password=" + password + ", age=" + age + ", dateOfBirth=" + dateOfBirth + "]";
 	}
+
+	
 		
 	
 }
