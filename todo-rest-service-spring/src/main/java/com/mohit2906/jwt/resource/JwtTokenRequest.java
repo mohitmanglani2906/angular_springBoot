@@ -10,7 +10,7 @@ public class  JwtTokenRequest implements Serializable {
     private String password;
 
     public JwtTokenRequest() {
-        super();
+       
     }
 
     public JwtTokenRequest(String username, String password) {
