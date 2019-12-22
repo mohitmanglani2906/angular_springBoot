@@ -8,6 +8,7 @@ export class User {
     public name: string
     public age: number
     public email: any
+    public username:any
     public password:any
     public dateOfBirth: Date
  // ) { }
@@ -29,9 +30,6 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
   }
-
-
-
   signUpUser()
   {
       // console.log("____ User ____ " + this.user.age)

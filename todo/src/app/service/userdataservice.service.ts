@@ -14,7 +14,7 @@ export class UserdataserviceService {
 
   saveUser(user){
 
-    console.log("___ User ___ " + user)
+    // console.log("___ User ___ " + user)
 
     return this.http.post(`${API_URL}/db/users`,user);
   }
