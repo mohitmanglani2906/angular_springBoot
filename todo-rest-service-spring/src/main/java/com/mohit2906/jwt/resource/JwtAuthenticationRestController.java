@@ -1,7 +1,5 @@
 package com.mohit2906.jwt.resource;
 
-import java.util.Objects;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -15,7 +13,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mohit2906.jwt.JwtTokenUtil;
-//import com.mohit2906.jwt.JwtUserDetails;
 import com.mohit2906.model.JwtUserDetailsService;
 
 @RestController
@@ -44,10 +40,11 @@ public class JwtAuthenticationRestController {
 
 //  @Autowired
 //  private UserDetailsService jwtInMemoryUserDetailsService;
-//  
-  @Autowired
-  private JwtUserDetailsService userDetails;
-  
+
+   
+  	@Autowired
+  	private JwtUserDetailsService jwtuserDetailsService;
+
   @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
   public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
       throws AuthenticationException {
@@ -58,7 +55,10 @@ public class JwtAuthenticationRestController {
 	
     authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
     
-    final UserDetails userDetails = this.userDetails.loadUserByUsername(authenticationRequest.getUsername());
+
+    //final UserDetails userDetails = this.userDetails.loadUserByUsername(authenticationRequest.getUsername());
+
+    final UserDetails userDetails = jwtuserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
     
     logger.info("___ User Details ___", userDetails);
     
@@ -74,7 +74,11 @@ public class JwtAuthenticationRestController {
     String authToken = request.getHeader(tokenHeader);
     final String token = authToken.substring(7);
     String username = jwtTokenUtil.getUsernameFromToken(token);
+
 //    JwtUserDetails user = (JwtUserDetails) this.userDetails.loadUserByUsername(username);
+
+    JwtUserDetailsService user = (JwtUserDetailsService) jwtuserDetailsService.loadUserByUsername(username);
+
 
     if (jwtTokenUtil.canTokenBeRefreshed(token)) {
       String refreshedToken = jwtTokenUtil.refreshToken(token);
@@ -92,8 +96,10 @@ public class JwtAuthenticationRestController {
   private void authenticate(String username, String password) {
 //    Objects.requireNonNull(username);
 //    Objects.requireNonNull(password);
+
 //    
     System.out.println("___ In authenticate function ____ " );
+
 
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

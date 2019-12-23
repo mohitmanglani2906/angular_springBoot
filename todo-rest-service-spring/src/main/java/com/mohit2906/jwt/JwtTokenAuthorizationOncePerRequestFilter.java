@@ -28,11 +28,15 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+
 //    @Autowired
 //    private UserDetailsService jwtInMemoryUserDetailsService;
     
-    @Autowired
-    private JwtUserDetailsService userDetailsService;
+    
+
+	@Autowired
+	private JwtUserDetailsService jwtUserDetailsService;
+
     
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -71,7 +75,9 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
         
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+
+
+            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

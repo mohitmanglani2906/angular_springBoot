@@ -47,8 +47,10 @@ public class UserProfileResource
 			System.out.println("____ Error ____" + e.getMessage());
 			return ResponseEntity.status(400).build();		}
 		
-		//String statusCode = sendEmail.sendEmailToUsers(userProfile.getEmail()); // Send Welcome Email
-		
+
+//		String statusCode = sendEmail.sendEmailToUsers(userProfile.getEmail()); // Send Welcome Email
+//		
+
 //		if(!statusCode.equals("Success")){
 //			return ResponseEntity.status(400).build();
 //		}

@@ -28,6 +28,10 @@ public class UserProfile
 	
 	private String password;
 	
+
+	
+	
+
 	private Integer age;
 	
 	private Timestamp dateOfBirth;
@@ -36,8 +40,9 @@ public class UserProfile
 		super();
 	}
 
-	public UserProfile(Long id, String name, String username, String email, String password, Integer age,
-			Timestamp dateOfBirth) {
+
+	public UserProfile(Long id, String name, String email, String password, Integer age, String username ,Timestamp dateOfBirth) {
+
 		super();
 		this.id = id;
 		this.name = name;
@@ -45,6 +50,7 @@ public class UserProfile
 		this.email = email;
 		this.password = password;
 		this.age = age;
+		this.username = username;
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -109,9 +115,13 @@ public class UserProfile
 
 	@Override
 	public String toString() {
-		return "UserProfile [id=" + id + ", name=" + name + ", username=" + username + ", email=" + email
-				+ ", password=" + password + ", age=" + age + ", dateOfBirth=" + dateOfBirth + "]";
+
+		
+		return "UserProfile [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password
+				+ ", username=" + username + ", age=" + age + ", dateOfBirth=" + dateOfBirth + "]";
 	}
+
+
 
 	
 		

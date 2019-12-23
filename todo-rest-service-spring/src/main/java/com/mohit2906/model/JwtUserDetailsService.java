@@ -9,12 +9,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component
-public class JwtUserDetailsService implements UserDetailsService
-{
+	
+   @Component
+   public class JwtUserDetailsService implements UserDetailsService {
+	
 	
 	@Autowired
-	private UserProfileJpaRepository userRepo;
+	UserProfileJpaRepository userRepo;
+
 	
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
@@ -22,14 +24,19 @@ public class JwtUserDetailsService implements UserDetailsService
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
+
 		
 		System.out.println("___ UserName ____ " + username);
 		
+		
 		UserProfile userProfile = userRepo.findByUsername(username);
 		
-		System.out.println("___ User Profile ___ " + userProfile);
+		System.out.println("________in loadbyusername ______ " + userProfile);
 		
-		if(userProfile == null) throw new UsernameNotFoundException("User 404");
+		
+		if(userProfile==null) throw new UsernameNotFoundException("User 404");
+		
+		//return new UserPrincipal(user);
 		
 		return new org.springframework.security.core.userdetails.User(userProfile.getUsername(), userProfile.getPassword(),
 				new ArrayList<>());
@@ -37,3 +44,4 @@ public class JwtUserDetailsService implements UserDetailsService
 	}
 
 }
+
