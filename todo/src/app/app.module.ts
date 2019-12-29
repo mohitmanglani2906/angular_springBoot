@@ -15,6 +15,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TodoComponent } from './todo/todo.component';
 import { HttpInterceptorBasicAuthService } from './service/http/http-interceptor-basic-auth.service';
 import { SignupComponent } from './signup/signup.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 // Needed to add FormsModule in this file for ngModel for input tag
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { SignupComponent } from './signup/signup.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule     
+    HttpClientModule,
+    ReactiveFormsModule  
     
   ],
   providers: [

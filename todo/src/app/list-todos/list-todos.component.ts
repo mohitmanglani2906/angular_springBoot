@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoDataService } from '../service/data/todo-data.service';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormArray, FormControl, ValidatorFn } from '@angular/forms';
+import { of } from 'rxjs';
+// import { filter } from 'rxjs/operators';
 
 export class Todo {
   constructor(
@@ -18,8 +21,12 @@ export class Todo {
 })
 export class ListTodosComponent implements OnInit {
 
+  form: FormGroup
+  filters = []
+
   todos = Todo[100]
   message: string
+  check: boolean
 
   // todos = [
   //   new Todo(1,'Learn to Dance',false, new Date()),
@@ -36,23 +43,78 @@ export class ListTodosComponent implements OnInit {
   //   description : 'Learn to Dance'
   // }
 
-  constructor(private service: TodoDataService,private router:Router) { }
+  constructor(private service: TodoDataService,private router:Router, private formBuilder: FormBuilder) 
+  {
+       this.form = this.formBuilder.group({
+        filters: ['']
+       });
+
+       of(this.getFilters()).subscribe(filters => {
+        this.filters = filters;
+        this.form.controls.filters.patchValue(this.filters[0].id);
+      });
+
+      // sync filters
+      //  this.filters = [] = this.getFilters();
+      //  this.form.controls.filters.patchValue(this.filters[0].id);
+  }
+
+  getFilters() {
+    return [
+      {id:'0', name:'Filter'},
+      {id:'1', name:true},
+      {id:'2', name:false}
+    ]
+  }
 
   refreshTodos(){
-    this.service.retrieveAllTodos('Mohit').subscribe(
-      response => {
-        console.log(response)
-        this.todos = response
-      }
 
-    )
+    if(this.check == true || this.check == false){
+      // console.log('In Conditioned Value ____ '  + this.filters[this.form.value['filters']]['name'])
+      this.service.findByCriteria('Mohit',this.check).subscribe(
+        response => {
+          this.todos = response
+        },
+        error =>{
+          this.message = `Can't Find Todos for Condtion ${this.check}`
+        }
+
+      )
+    }
+    else{
+      this.service.retrieveAllTodos('Mohit').subscribe(
+        response => {
+          // console.log(response)
+          this.todos = response
+        }
+      )
+    }
   }
 
   ngOnInit() {
     this.refreshTodos()
   }
 
-  
+  submit(){
+    // console.log(this.form.value['filters']) // this gives id
+    // console.log(this.filters[this.form.value['filters']]['name']) // this gives values from dict. either false or True
+
+    if(this.filters[this.form.value['filters']]['name'] == true){
+      console.log('this is true')
+      this.check = true
+      this.refreshTodos()
+    }
+    else if(this.filters[this.form.value['filters']]['name'] == false){
+      console.log('this is false')
+      this.check = false
+      this.refreshTodos()
+    }
+    else{
+      this.check = null
+      console.log(this.filters[this.form.value['filters']]['name'])
+      this.refreshTodos()
+    }
+  }
 
   deleteTodo(id) {
     console.log("Deleted" + id)

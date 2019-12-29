@@ -31,4 +31,8 @@ export class TodoDataService {
     return this.http.post(`${TODO_JPA_API_URL}/users/${username}/todos`,todo)
   }
 
+  findByCriteria(username,isDone){
+    return this.http.get<Todo[]>(`${TODO_JPA_API_URL}/users/${username}/${isDone}/todos`)
+  }
+
 }
