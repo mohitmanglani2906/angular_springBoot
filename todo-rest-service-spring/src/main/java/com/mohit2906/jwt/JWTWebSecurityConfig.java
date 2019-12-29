@@ -78,6 +78,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             antMatchers("/db/users").permitAll().
             antMatchers("/mail/send").permitAll().
             //antMatchers("/db/users/all/*").permitAll().
+            //antMatchers("/db/users/all/matching/*").permitAll().
             anyRequest().authenticated().and()
             
             .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()

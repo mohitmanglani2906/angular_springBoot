@@ -1,7 +1,19 @@
 package com.mohit2906.model;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -67,6 +79,45 @@ public class UserProfileResource
 		return userProfileJpaRepo.findByUsername(username);
 		
 	}
+	
+	@GetMapping("/db/users/all")
+	public List<UserProfile> getAllUsers()
+	{
+		return userProfileJpaRepo.findAll();
+	}
+	
+	@GetMapping("/db/users/all/matching/{username}")
+	public List<UserProfile> findByCriteria(@PathVariable String username, @PageableDefault(size=2, sort = "id")
+			Pageable pageable){
+		Page page =  userProfileJpaRepo.findAll(new Specification<UserProfile>() {
+			
+			@Override
+			public Predicate toPredicate(Root<UserProfile> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+				List<Predicate> predicates = new ArrayList<>();
+				
+				if(username != null) {
+//					predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("username"),username)));
+					
+					 //predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("username"), username)));
+					
+					predicates.add(criteriaBuilder.and(criteriaBuilder.like(root.get("username"),"%" + username + "%")));
+				}
+				
+				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+			}
+		},pageable);
+		
+		page.getTotalElements();
+		page.getTotalPages();
+		
+		System.out.println("___ Total Elements and Total pages ___ " + page.getTotalElements() + " "  + page.getTotalPages());
+		
+		return page.getContent();
+		
+		//return userPro; 
+	}
+	
+	
 //	@PostMapping("/test1")
 //	public String test1(@RequestBody UserProfile userProfile) {
 //		HttpHeaders headers = new HttpHeaders();

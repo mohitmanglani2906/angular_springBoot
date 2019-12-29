@@ -1,10 +1,19 @@
 package com.mohit2906.todo;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
@@ -72,6 +82,79 @@ public class TodoJpaResource {
 		return ResponseEntity.created(uri).build();
 		
 	}
+	
+	@GetMapping("/db/users/{username}/{isDone}/todos")
+	public List<Todo> findByCriteria(@PathVariable Boolean isDone, @PathVariable String username) throws Exception{
+		
+		List<Todo> todosList = null;
+		
+		try {
+			todosList = todoJpaRepository.findAll(new Specification<Todo>() {
+				
+				@Override
+				public Predicate toPredicate(Root<Todo> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+					List<Predicate> predicates = new ArrayList<>();
+					
+					if(username != null && isDone != null) {
+						predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("isDone"),isDone)));
+					}
+					
+					return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+				}
+			});	
+			
+			if(todosList.isEmpty()) {
+				throw new Exception("Not Found");
+			}
+		}
+		
+		catch(Exception e) {
+			System.out.println("___ Error ____ " + e.getMessage());
+		}
+		
+//		if(todosList.isEmpty()) {
+//			System.out.println("___ Not Found ____ ");
+//			throw new Exception("Not Found");
+//		}
+//		
+		return todosList;
+		
+	}
+	
+	
+	//Filterring
+	
+//	@GetMapping("/search/{isDone}")
+//	public String search(@PathVariable Boolean isDone, Pageable pageable) {
+////		ModelAndView mv = new ModelAndView("travel/list");
+//		Page<Todo> todo = todoJpaRepository.findByisDoneLike("%" + isDone + "%",pageable);
+//		
+//		if(todo != null) {
+//			return "Done";
+//		}
+//		
+//		return "Not Done";
+//	}
+//	
+//	@GetMapping("/search/todo/{Id}")
+//	public String searchById(@PathVariable Long Id, Pageable pageable) {
+//		try {
+//			List<Todo> todo = todoJpaRepository.findByIdLike(Id,pageable);
+//			
+//			if(todo != null) {
+//				return "Done";
+//			}
+//		}
+//		
+//		catch(Exception e) {
+//			System.out.println("___ error ___" + e.getMessage());
+//		}
+//		
+//		
+//		return "Not Done";
+//	}
+	
+	
 	
 	
 }
