@@ -68,7 +68,6 @@ export class ListTodosComponent implements OnInit {
   }
 
   refreshTodos(){
-
     if(this.check == true || this.check == false){
       // console.log('In Conditioned Value ____ '  + this.filters[this.form.value['filters']]['name'])
       this.service.findByCriteria('Mohit',this.check).subscribe(

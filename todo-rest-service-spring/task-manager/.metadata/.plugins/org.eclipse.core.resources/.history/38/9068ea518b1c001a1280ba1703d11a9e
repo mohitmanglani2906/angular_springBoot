@@ -1,5 +1,0 @@
-package com.mohit2906.basic.auth;
-
-public class CORSFilter {
-
-}

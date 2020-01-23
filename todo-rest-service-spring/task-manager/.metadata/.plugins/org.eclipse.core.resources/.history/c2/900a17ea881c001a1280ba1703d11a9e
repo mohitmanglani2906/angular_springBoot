@@ -1,3 +1,0 @@
-#logging.level.org.springframework = debug
-spring.security.user.name=Mohit
-spring.security.user.password=dummy
