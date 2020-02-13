@@ -1,0 +1,39 @@
+<!-- <form (ngSubmit)="retrieveMeetUpEvents()" #meetupData="ngForm">
+
+  <button type="submit" class="btn btn-success">Call</button>
+
+</form> -->
+
+<div class="container">  
+<table class="table">
+    <thead>
+      <tr>
+        <th>Profile picture</th> 
+        <th>Member Name</th>
+        <th>Coming</th>
+        <th>Venue</th>
+        <th>Event Name</th>
+        <th>Go To Event</th>
+        <th><button (click)="retrieveMeetUpEvents()" class="btn btn-primary">Refresh</button>
+        </th> 
+      </tr>
+    </thead>
+    <!-- <div class="container" *ngIf ='!meetups' class="btn btn-primary" >{{loadMessage}}</div> -->
+    <div class="loader" *ngIf ='!meetups'>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <tbody>
+      <tr *ngFor="let meetup of meetups;">
+        <td><img src = "{{meetup.picUrl}}"></td>
+        <td>{{meetup.member_name}}</td>
+        <td>{{meetup.response}}</td>
+        <td>{{meetup.venue_name}}</td>
+        <td>{{meetup.event_name}}</td>
+        <td><a href="{{meetup.event_url}}" class="btn btn-primary" target="_blank">Go To Event Page</a></td> 
+      </tr>
+    </tbody>
+</table>  
+
+</div>
