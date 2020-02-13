@@ -1,8 +1,5 @@
 package com.mohit2906.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 import com.sendgrid.*;

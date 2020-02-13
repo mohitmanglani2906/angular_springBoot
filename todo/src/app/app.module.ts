@@ -16,6 +16,7 @@ import { TodoComponent } from './todo/todo.component';
 import { HttpInterceptorBasicAuthService } from './service/http/http-interceptor-basic-auth.service';
 import { SignupComponent } from './signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MeetUpListComponent } from './meet-up-list/meet-up-list.component';
 
 // Needed to add FormsModule in this file for ngModel for input tag
 @NgModule({
@@ -29,7 +30,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     FooterComponent,
     LogoutComponent,
     TodoComponent,
-    SignupComponent
+    SignupComponent,
+    MeetUpListComponent
   ],
   imports: [
     BrowserModule,

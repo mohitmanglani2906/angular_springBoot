@@ -85,6 +85,7 @@ export class ListTodosComponent implements OnInit {
         response => {
           // console.log(response)
           this.todos = response
+          console.log(typeof(this.todos))
         }
       )
     }

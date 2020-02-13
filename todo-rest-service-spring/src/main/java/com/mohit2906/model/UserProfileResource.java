@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+//import com.mohit2906.kafka.KakfaSender;
 import com.mohit2906.utils.SendEmail;
 
 
@@ -35,6 +37,9 @@ public class UserProfileResource
 	
 	@Autowired
 	SendEmail sendEmail;
+//	
+//	@Autowired
+//	private KakfaSender sender;
 	
 //	@Autowired
 //	RestTemplate restTemplate;
@@ -60,12 +65,12 @@ public class UserProfileResource
 			return ResponseEntity.status(400).build();		}
 		
 
-		String statusCode = sendEmail.sendEmailToUsers(userProfile.getEmail()); // Send Welcome Email
-		
-
-		if(!statusCode.equals("Success")){
-			return ResponseEntity.status(400).build();
-     	}
+//		String statusCode = sendEmail.sendEmailToUsers(userProfile.getEmail()); // Send Welcome Email
+//		sender.send(sendEmail.sendEmailToUsers(userProfile.getEmail()));
+		//sender.send(statusCode);
+//		if(!statusCode.equals("Success")){
+//			return ResponseEntity.status(400).build();
+//     	}
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdUser.getId()).toUri();
 		return ResponseEntity.created(uri).build();

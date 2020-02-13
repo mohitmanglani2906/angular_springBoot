@@ -6,6 +6,7 @@
         <ul class="navbar-nav">
             <li><a *ngIf ="hardcodedAuthenticationService.isUserLoggedIn()" routerLink="/welcome/Mohit" class="nav-link">Home</a></li>
             <li><a *ngIf ="hardcodedAuthenticationService.isUserLoggedIn()" routerLink="/todos" class="nav-link">Todos</a></li> 
+            <li><a *ngIf ="hardcodedAuthenticationService.isUserLoggedIn()" routerLink="/meetup" class="nav-link">Meet Up</a></li> 
         </ul>
 
         <ul class="navbar-nav navbar-collapse justify-content-end">

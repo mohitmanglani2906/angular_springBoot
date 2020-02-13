@@ -77,6 +77,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("${jwt.get.token.uri}").permitAll().
             antMatchers("/db/users").permitAll().
             antMatchers("/mail/send").permitAll().
+//            antMatchers("/db/events/meetup").permitAll().
+            antMatchers("http://stream.meetup.com/2/rsvps").permitAll().
             //antMatchers("/db/users/all/*").permitAll().
             //antMatchers("/db/users/all/matching/*").permitAll().
             anyRequest().authenticated().and()
