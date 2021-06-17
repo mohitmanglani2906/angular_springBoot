@@ -43,7 +43,7 @@ export class MeetUpListComponent implements OnInit {
       },
       error =>{
         this.errorMessage = "Please Refresh!!!"
-        console.log(error)
+        console.log(error.message)
       }
 
     )
